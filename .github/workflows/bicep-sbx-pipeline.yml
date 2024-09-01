@@ -49,4 +49,4 @@ jobs:
         az deployment sub create \
         --location 'eastus' \
         --template-file main.bicep \
-        --parameters @configs\nonprod\sbx-parameters.json
+        --parameters @configs/nonprod/sbx-parameters.json
