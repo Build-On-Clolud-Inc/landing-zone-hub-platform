@@ -14,6 +14,9 @@ param resourceGroupName string
 @description('Optional. The location to deploy resources to.')
 param resourceLocation string = deployment().location
 
+@description('Optional. The tags to apply to the resource group.')
+param tags object 
+
 
 // General resources
 // =================
@@ -22,5 +25,6 @@ module rg 'br/public:avm/res/resources/resource-group:0.3.0' = {
   params: {
     name: resourceGroupName
     location: resourceLocation
+    tags: tags
   }
 }
