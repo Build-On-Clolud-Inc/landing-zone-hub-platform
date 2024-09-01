@@ -7,6 +7,12 @@
       },
       "resourceLocation": {
         "value": "eastus"
+      },
+      "tags": {
+        "value": {
+          "environment": "sbx",
+          "reason": "azure Landing Zone using bicep"
+        }
       }
     }
   }
