@@ -12,7 +12,7 @@ metadata description = 'Ehsan Eskadnari example'
 param resourceGroupName string 
 
 @description('Optional. The location to deploy resources to.')
-param resourceLocation string = deployment().location
+param resourceLocation string 
 
 @description('Optional. The tags to apply to the resource group.')
 param tags object 
@@ -21,7 +21,7 @@ param tags object
 param vnetName string
 
 @description('Optional. The address prefix for the virtual network.')
-param vnetAddressPrefix array
+param vnetAddressPrefix string
 
 
 // Define the subnetAddressPrefixes param
@@ -30,25 +30,23 @@ param subnetAddressPrefixes array
 
 // General resources
 // =================
-module rg 'br/public:avm/res/resources/resource-group:0.3.0' = {
-  name: 'rg01'
+ module rg 'modules/resourceGroup.bicep' = {
+  scope: subscription()
+  name: 'resourceGroup'
   params: {
-    name: resourceGroupName
     location: resourceLocation
-    tags: tags
+    resourceGroupName: resourceGroupName
   }
-}
+ }
 
 
-
-//Virtual Network
-module vnet 'br/public:avm/res/network/virtual-network:1.1.3' = {
-  scope: resourceGroup('rg01')
+module  vnet 'modules/virtualNetwork.bicep' = {
+  scope: resourceGroup('rg-sbx-landingzone-eastus-001')
   name: 'vnet01'
   params: {
-      name: vnetName
-      location: resourceLocation
-      addressPrefixes: vnetAddressPrefix
+    virtualNetworkName: vnetName
+    virtualNetworkLocation : resourceLocation
+      addressPrefix: vnetAddressPrefix
       subnets: [
           for (subnetAddressPrefix, i) in subnetAddressPrefixes: {
               name: 'subnet${i + 1}'
@@ -57,6 +55,23 @@ module vnet 'br/public:avm/res/network/virtual-network:1.1.3' = {
       ]
   }
 }
+
+// //Virtual Network
+// module vnet 'br/public:avm/res/network/virtual-network:0.4.0' = {
+//   scope: resourceGroup('rg-sbx-landingzone-eastus-001')
+//   name: 'vnet01'
+//   params: {
+//       name: vnetName
+//       location: resourceLocation
+//       addressPrefixes: vnetAddressPrefix
+//       subnets: [
+//           for (subnetAddressPrefix, i) in subnetAddressPrefixes: {
+//               name: 'subnet${i + 1}'
+//               addressPrefix: subnetAddressPrefix
+//           }
+//       ]
+//   }
+// }
 
 
 //Subnets, nsg, route tables, Subnet for bastion /27
