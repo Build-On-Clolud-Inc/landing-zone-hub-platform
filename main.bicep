@@ -31,7 +31,7 @@ module rg 'br/public:avm/res/resources/resource-group:0.3.0' = {
 
 
 //Virtual Network
-module vnet 'br/public:avm/network/virtual-network:0.4.0' = {
+module vnet 'avm/res/network/virtual-network/0.4.0' = {
   name: 'vnet01'
   params: {
     name: vnetName
