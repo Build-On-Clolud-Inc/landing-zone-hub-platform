@@ -17,6 +17,16 @@ param resourceLocation string = deployment().location
 @description('Optional. The tags to apply to the resource group.')
 param tags object 
 
+@description('Optional. The name of the virtual network.')
+param vnetName string
+
+@description('Optional. The address prefix for the virtual network.')
+param vnetAddressPrefix array
+
+
+// Define the subnetAddressPrefixes param
+param subnetAddressPrefixes array 
+
 
 // General resources
 // =================
@@ -30,19 +40,21 @@ module rg 'br/public:avm/res/resources/resource-group:0.3.0' = {
 }
 
 
+
 //Virtual Network
-module vnet 'br/public:avm/res/network/virtual-network/0.4.0' = {
+module vnet 'br/public:avm/res/network/virtual-network:0.1.5' = {
+  scope: resourceGroup('rg01')
   name: 'vnet01'
   params: {
-    name: vnetName
-    location: resourceLocation
-    addressPrefix: vnetAddressPrefix
-    subnets: [
-      for (subnetAddressPrefix, i) in subnetAddressPrefixes: {
-        name: 'subnet${i + 1}'
-        addressPrefix: subnetAddressPrefix
-      }
-    ]
+      name: vnetName
+      location: resourceLocation
+      addressPrefixes: vnetAddressPrefix
+      subnets: [
+          for (subnetAddressPrefix, i) in subnetAddressPrefixes: {
+              name: 'subnet${i + 1}'
+              addressPrefix: subnetAddressPrefix
+          }
+      ]
   }
 }
 
