@@ -42,7 +42,7 @@ module rg 'br/public:avm/res/resources/resource-group:0.3.0' = {
 
 
 //Virtual Network
-module vnet 'br/public:avm/res/network/virtual-network:0.1.5' = {
+module vnet 'br/public:avm/res/network/virtual-network:1.1.3' = {
   scope: resourceGroup('rg01')
   name: 'vnet01'
   params: {
