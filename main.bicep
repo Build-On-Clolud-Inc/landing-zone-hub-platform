@@ -28,3 +28,37 @@ module rg 'br/public:avm/res/resources/resource-group:0.3.0' = {
     tags: tags
   }
 }
+
+
+//Virtual Network
+module vnet 'br/public:avm/network/virtual-network:0.4.0' = {
+  name: 'vnet01'
+  params: {
+    name: vnetName
+    location: resourceLocation
+    addressPrefix: vnetAddressPrefix
+    subnets: [
+      for (subnetAddressPrefix, i) in subnetAddressPrefixes: {
+        name: 'subnet${i + 1}'
+        addressPrefix: subnetAddressPrefix
+      }
+    ]
+  }
+}
+
+
+//Subnets, nsg, route tables, Subnet for bastion /27
+
+
+//VM with private IP
+
+//bastion
+
+//Firewalls
+
+//Firewall Rules
+
+
+
+
+
