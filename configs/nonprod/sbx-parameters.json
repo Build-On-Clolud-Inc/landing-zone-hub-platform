@@ -13,6 +13,18 @@
           "environment": "sbx",
           "reason": "azure Landing Zone using bicep"
         }
-      }
+      },
+      "vnetName": {
+        "value": "vnet-hub-sbx-landingzone-eastus-001"
+      },
+      "vnetAddressPrefix": {
+        "value": "10.0.0.0/22"
+      },
+      "subnetAddressPrefixes": {
+        "value": [
+          "10.0.1.0/27",
+          "10.0.2.0/26"
+        ]
+      }      
     }
   }
