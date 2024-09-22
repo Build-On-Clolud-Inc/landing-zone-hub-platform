@@ -15,7 +15,9 @@
         "value": [
           {
             "name": "AzureBastionSubnet",
-            "addressPrefix": "10.0.1.0/27"
+            "addressPrefix": "10.0.1.0/27",
+            "privateEndpointNetworkPolicies": "Disabled",
+            "privateLinkServiceNetworkPolicies": "Disabled"
           },
           {
             "name": "subnet1",
