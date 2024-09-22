@@ -41,6 +41,7 @@ module rg 'modules/resourceGroup.bicep' = {
   params: {
     location: resourceLocation
     resourceGroupName: resourceGroupName
+    tags: tags
   }
 }
 
@@ -63,7 +64,14 @@ module vnet 'modules/virtualNetwork.bicep' = {
     virtualNetworkName: vnetName
     virtualNetworkLocation: resourceLocation
     addressPrefix: vnetAddressPrefix
-    subnets: subnets
+    subnets: [
+      for subnet in subnets: {
+        name: subnet.name
+        properties: {
+          addressPrefix: subnet.addressPrefix
+        }
+      }
+    ]
   }
 }
 
