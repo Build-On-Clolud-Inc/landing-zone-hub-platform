@@ -8,23 +8,33 @@
       "resourceLocation": {
         "value": "eastus"
       },
-      "tags": {
-        "value": {
-          "environment": "sbx",
-          "reason": "azure Landing Zone using bicep"
-        }
-      },
       "vnetName": {
         "value": "vnet-hub-sbx-landingzone-eastus-001"
       },
+      "subnets": {
+        "value": [
+          {
+            "name": "AzureBastionSubnet",
+            "addressPrefix": "10.0.1.0/27"
+          },
+          {
+            "name": "subnet1",
+            "addressPrefix": "10.0.1.0/24"
+          },
+          {
+            "name": "subnet2",
+            "addressPrefix": "10.0.2.0/24"
+          }
+        ]
+        },
       "vnetAddressPrefix": {
         "value": "10.0.0.0/22"
       },
-      "subnetAddressPrefixes": {
-        "value": [
-          "10.0.1.0/27",
-          "10.0.2.0/26"
-        ]
-      }      
+      "publicIpName": {
+        "value": "pip01"
+      },
+      "publicIpSku": {
+        "value": "Standard"
+      }
     }
   }

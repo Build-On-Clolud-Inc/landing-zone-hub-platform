@@ -14,17 +14,20 @@ param resourceGroupName string
 @description('Optional. The location to deploy resources to.')
 param resourceLocation string
 
-@description('Optional. The tags to apply to the resource group.')
-param tags object
-
 @description('Optional. The name of the virtual network.')
 param vnetName string
 
 @description('Optional. The address prefix for the virtual network.')
 param vnetAddressPrefix string
 
-// Define the subnetAddressPrefixes parYour status is set to do not disturb. You'll only get notificatioam
-param subnetAddressPrefixes array
+@description('Optional. The subnets for the virtual network.')
+param subnets array
+
+@description('Optional. The name of the public IP.')
+param publicIpName string
+
+@description('Optional. The SKU of the public IP.')
+param publicIpSku string
 
 
 // General resources
@@ -44,9 +47,9 @@ module pip 'modules/pip.bicep' = {
   scope: resourceGroup(resourceGroupName)
   name: 'pip01'
   params: {
-    publicIpName: 'pip01'
+    publicIpName: publicIpName
     location: resourceLocation
-    publicIpSku: 'Standard'
+    publicIpSku: publicIpSku
   }
 }
 
@@ -57,12 +60,7 @@ module vnet 'modules/virtualNetwork.bicep' = {
     virtualNetworkName: vnetName
     virtualNetworkLocation: resourceLocation
     addressPrefix: vnetAddressPrefix
-    subnets: [
-      for (subnetAddressPrefix, i) in subnetAddressPrefixes: {
-        name: 'subnet${i + 1}'
-        addressPrefix: subnetAddressPrefix
-      }
-    ]
+    subnets: subnets
   }
 }
 
