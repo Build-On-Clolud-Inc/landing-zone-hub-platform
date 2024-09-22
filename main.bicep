@@ -23,8 +23,9 @@ param vnetName string
 @description('Optional. The address prefix for the virtual network.')
 param vnetAddressPrefix string
 
-// Define the subnetAddressPrefixes param
+// Define the subnetAddressPrefixes parYour status is set to do not disturb. You'll only get notificatioam
 param subnetAddressPrefixes array
+
 
 // General resources
 // =================
@@ -37,8 +38,20 @@ module rg 'modules/resourceGroup.bicep' = {
   }
 }
 
+
+
+module pip 'modules/pip.bicep' = {
+  scope: resourceGroup(resourceGroupName)
+  name: 'pip01'
+  params: {
+    publicIpName: 'pip01'
+    location: resourceLocation
+    publicIpSku: 'Standard'
+  }
+}
+
 module vnet 'modules/virtualNetwork.bicep' = {
-  scope: resourceGroup('rg-sbx-landingzone-eastus-001')
+  scope: resourceGroup(resourceGroupName)
   name: 'vnet01'
   params: {
     virtualNetworkName: vnetName
