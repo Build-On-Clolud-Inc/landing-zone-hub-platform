@@ -60,14 +60,7 @@ module vnet 'modules/virtualNetwork.bicep' = {
     virtualNetworkName: vnetName
     virtualNetworkLocation: resourceLocation
     addressPrefix: vnetAddressPrefix
-    subnets: [
-      for subnet in subnets: {
-        name: subnet.name
-        properties: {
-          addressPrefix: subnet.addressPrefix
-        }
-      }
-    ]
+    subnets: subnets
   }
 }
 

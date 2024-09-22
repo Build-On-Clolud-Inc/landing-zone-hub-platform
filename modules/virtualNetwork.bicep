@@ -13,7 +13,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-02-01' = {
       ]
     }
     subnets: [
-      for (subnet, i) in subnets: {
+      for subnet in subnets: {
         name: subnet.name
         properties: {
           addressPrefix: subnet.addressPrefix
