@@ -29,6 +29,9 @@ param publicIpName string
 @description('Optional. The SKU of the public IP.')
 param publicIpSku string
 
+@description('Optional. The name of the bastion.')
+param bastionName string
+
 
 // General resources
 // =================
@@ -64,28 +67,22 @@ module vnet 'modules/virtualNetwork.bicep' = {
   }
 }
 
-// //Virtual Network
-// module vnet 'br/public:avm/res/network/virtual-network:0.4.0' = {
-//   scope: resourceGroup('rg-sbx-landingzone-eastus-001')
-//   name: 'vnet01'
-//   params: {
-//       name: vnetName
-//       location: resourceLocation
-//       addressPrefixes: vnetAddressPrefix
-//       subnets: [
-//           for (subnetAddressPrefix, i) in subnetAddressPrefixes: {
-//               name: 'subnet${i + 1}'
-//               addressPrefix: subnetAddressPrefix
-//           }
-//       ]
-//   }
-// }
+//make a call to the bastion module
+module bastion 'modules/bastion.bicep' = {
+  scope: resourceGroup(resourceGroupName)
+  name: 'bastion01'
+  params: {
+    bastionName: bastionName
+    publicIpAddressId: pip.outputs.publicIpId
+    bastionSubnetId: resourceId('Microsoft.Network/VirtualNetworks/subnets', vnetName, 'AzureBastionSubnet')    
+  }
+}
 
 //Subnets, nsg, route tables, Subnet for bastion /27
 
 //VM with private IP
 
-//bastion
+
 
 //Firewalls
 

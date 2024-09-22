@@ -13,3 +13,5 @@ resource publicIp 'Microsoft.Network/publicIPAddresses@2021-02-01' = {
     publicIPAllocationMethod: 'Static'
   }
 }
+
+output publicIpId string = publicIp.id
