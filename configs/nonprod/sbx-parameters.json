@@ -31,10 +31,13 @@
         "value": "10.0.0.0/22"
       },
       "publicIpName": {
-        "value": "pip01"
+        "value": "pip-sbx-landingzone-eastus-001"
       },
       "publicIpSku": {
         "value": "Standard"
+      },
+      "bastionName": {
+        "value": "bastion-sbx-landingzone-eastus-001"
       }
     }
   }
