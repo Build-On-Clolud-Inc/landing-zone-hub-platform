@@ -77,7 +77,7 @@ module bastion 'modules/bastion.bicep' = {
   params: {
     bastionName: bastionName
     publicIpAddressId: pip.outputs.publicIpId
-    bastionSubnetId: resourceId('Microsoft.Network/VirtualNetworks/subnets', vnetName, 'AzureBastionSubnet')    
+    bastionSubnetId: vnet.outputs.subnet01Id
   }
 }
 
