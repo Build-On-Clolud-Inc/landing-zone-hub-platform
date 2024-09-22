@@ -14,9 +14,6 @@ param resourceGroupName string
 @description('Optional. The location to deploy resources to.')
 param resourceLocation string
 
-@description('Optional. The tags to apply to the resource group.')
-param tags object
-
 @description('Optional. The name of the virtual network.')
 param vnetName string
 
@@ -41,7 +38,6 @@ module rg 'modules/resourceGroup.bicep' = {
   params: {
     location: resourceLocation
     resourceGroupName: resourceGroupName
-    tags: tags
   }
 }
 
