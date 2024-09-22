@@ -9,7 +9,10 @@
         "value": "eastus"
       },
       "tags": {
-        "value": "{\"environment\": \"sbx\", \"reason\": \"azure Landing Zone using bicep\"}"
+        "value": {
+            "environment": "sbx",
+            "reason": "azure Landing Zone using bicep"
+          }
       },
       "vnetName": {
         "value": "vnet-hub-sbx-landingzone-eastus-001"
