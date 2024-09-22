@@ -35,19 +35,22 @@ param bastionName string
 
 // General resources
 // =================
-module rg 'modules/resourceGroup.bicep' = {
-  scope: subscription()
-  name: 'resourceGroup'
-  params: {
-    location: resourceLocation
-    resourceGroupName: resourceGroupName
-  }
+// module rg 'modules/resourceGroup.bicep' = {
+//   scope: subscription()
+//   name: 'resourceGroup'
+//   params: {
+//     location: resourceLocation
+//     resourceGroupName: resourceGroupName
+//   }
+// }
+resource hubrg 'Microsoft.Resources/resourceGroups@2021-04-01' = {  
+  name: resourceGroupName
+  location: resourceLocation
 }
 
 
-
 module pip 'modules/pip.bicep' = {
-  scope: resourceGroup(resourceGroupName)
+  scope: hubrg
   name: 'pip01'
   params: {
     publicIpName: publicIpName
@@ -57,7 +60,7 @@ module pip 'modules/pip.bicep' = {
 }
 
 module vnet 'modules/virtualNetwork.bicep' = {
-  scope: resourceGroup(resourceGroupName)
+  scope: hubrg
   name: 'vnet01'
   params: {
     virtualNetworkName: vnetName
@@ -69,7 +72,7 @@ module vnet 'modules/virtualNetwork.bicep' = {
 
 //make a call to the bastion module
 module bastion 'modules/bastion.bicep' = {
-  scope: resourceGroup(resourceGroupName)
+  scope: hubrg
   name: 'bastion01'
   params: {
     bastionName: bastionName

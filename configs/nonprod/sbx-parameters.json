@@ -3,13 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
       "resourceGroupName": {
-        "value": "rg-sbx-landingzone-eastus-001"
+        "value": "rg-sbx-landingzone-eastus-01"
       },
       "resourceLocation": {
         "value": "eastus"
       },
       "vnetName": {
-        "value": "vnet-hub-sbx-landingzone-eastus-001"
+        "value": "vnet-hub-sbx-landingzone-eastus-01"
       },
       "subnets": {
         "value": [
@@ -27,13 +27,13 @@
         "value": "10.0.0.0/22"
       },
       "publicIpName": {
-        "value": "pip-sbx-landingzone-eastus-001"
+        "value": "pip-sbx-landingzone-eastus-01"
       },
       "publicIpSku": {
         "value": "Standard"
       },
       "bastionName": {
-        "value": "bastion-sbx-landingzone-eastus-001"
+        "value": "bastion-sbx-landingzone-eastus-01"
       }
     }
   }
