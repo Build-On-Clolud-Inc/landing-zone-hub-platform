@@ -1,66 +1,75 @@
-targetScope = 'subscription'
-
-metadata name = 'Ehsan Eskadnari example'
-metadata description = 'Ehsan Eskadnari example'
-
-// ========== //
-// Parameters //
-// ========== //
-
-@description('Optional. The name of the resource group to deploy for testing purposes.')
-@maxLength(90)
+@description('The name of the resource group.')
 param resourceGroupName string
 
-@description('Optional. The location to deploy resources to.')
+@description('The location of the resource group.')
 param resourceLocation string
 
-@description('Optional. The name of the virtual network.')
+@description('The name of the virtual network.')
 param vnetName string
 
-@description('Optional. The address prefix for the virtual network.')
+@description('The address prefix for the virtual network.')
 param vnetAddressPrefix string
 
-@description('Optional. The subnets for the virtual network.')
+@description('Array of subnets with names and address prefixes')
 param subnets array
 
-@description('Optional. The name of the public IP.')
+@description('The name of the public IP address for the Bastion.')
 param publicIpName string
 
-@description('Optional. The SKU of the public IP.')
-param publicIpSku string
+@description('The SKU of the public IP address for the Bastion.')
+param publicIpSku string = 'Standard'
 
-
-// General resources
-// =================
-module rg 'modules/resourceGroup.bicep' = {
-  scope: subscription()
-  name: 'resourceGroup'
-  params: {
-    location: resourceLocation
-    resourceGroupName: resourceGroupName
+// Virtual Network
+resource vnet 'Microsoft.Network/virtualNetworks@2021-02-01' = {
+  name: vnetName
+  location: resourceLocation
+  properties: {
+    addressSpace: {
+      addressPrefixes: [
+        vnetAddressPrefix
+      ]
+    }
+    subnets: [
+      for subnet in subnets: {
+        name: subnet.name
+        properties: {
+          addressPrefix: subnet.addressPrefix
+        }
+      }
+    ]
   }
 }
 
-
-
-module pip 'modules/pip.bicep' = {
-  scope: resourceGroup(resourceGroupName)
-  name: 'pip01'
-  params: {
-    publicIpName: publicIpName
-    location: resourceLocation
-    publicIpSku: publicIpSku
+// Public IP for Bastion
+resource publicIp 'Microsoft.Network/publicIPAddresses@2021-02-01' = {
+  name: publicIpName
+  location: resourceLocation
+  sku: {
+    name: publicIpSku
+  }
+  properties: {
+    publicIPAllocationMethod: 'Static'
   }
 }
 
-module vnet 'modules/virtualNetwork.bicep' = {
-  scope: resourceGroup(resourceGroupName)
-  name: 'vnet01'
-  params: {
-    virtualNetworkName: vnetName
-    virtualNetworkLocation: resourceLocation
-    addressPrefix: vnetAddressPrefix
-    subnets: subnets
+// Bastion Host
+resource bastionHost 'Microsoft.Network/bastionHosts@2021-02-01' = {
+  name: 'myBastionHost'
+  location: resourceLocation
+  properties: {
+    ipConfigurations: [
+      {
+        name: 'bastionHostIpConfig'
+        properties: {
+          subnet: {
+            id: resourceId('Microsoft.Network/virtualNetworks/subnets', vnetName, 'AzureBastionSubnet')
+          }
+          publicIPAddress: {
+            id: publicIp.id
+          }
+        }
+      }
+    ]
   }
 }
 
