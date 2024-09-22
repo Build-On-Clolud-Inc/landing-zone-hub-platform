@@ -21,7 +21,9 @@
           },
           {
             "name": "subnet1",
-            "addressPrefix": "10.0.2.0/24"
+            "addressPrefix": "10.0.2.0/24",
+            "privateEndpointNetworkPolicies": "Disabled",
+            "privateLinkServiceNetworkPolicies": "Disabled"
           }
         ]
         },

@@ -17,6 +17,8 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-02-01' = {
         name: subnet.name
         properties: {
           addressPrefix: subnet.addressPrefix
+          privateEndpointNetworkPolicies: subnet.privateEndpointNetworkPolicies
+          privateLinkServiceNetworkPolicies: subnet.privateLinkServiceNetworkPolicies
         }
       }
     ]
