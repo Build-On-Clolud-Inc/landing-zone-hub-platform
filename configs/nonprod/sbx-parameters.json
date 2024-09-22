@@ -1,40 +1,40 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "resourceGroupName": {
-      "value": "rg-sbx-landingzone-eastus-001"
-    },
-    "resourceLocation": {
-      "value": "eastus"
-    },
-    "vnetName": {
-      "value": "vnet-hub-sbx-landingzone-eastus-001"
-    },
-    "vnetAddressPrefix": {
-      "value": "10.0.0.0/22"
-    },
-    "subnets": {
-      "value": [
-        {
-          "name": "AzureBastionSubnet",
-          "addressPrefix": "10.0.1.0/27"
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "resourceGroupName": {
+        "value": "rg-sbx-landingzone-eastus-001"
+      },
+      "resourceLocation": {
+        "value": "eastus"
+      },
+      "vnetName": {
+        "value": "vnet-hub-sbx-landingzone-eastus-001"
+      },
+      "subnets": {
+        "value": [
+          {
+            "name": "AzureBastionSubnet",
+            "addressPrefix": "10.0.1.0/27"
+          },
+          {
+            "name": "subnet1",
+            "addressPrefix": "10.0.1.0/24"
+          },
+          {
+            "name": "subnet2",
+            "addressPrefix": "10.0.2.0/24"
+          }
+        ]
         },
-        {
-          "name": "subnet1",
-          "addressPrefix": "10.0.1.0/24"
-        },
-        {
-          "name": "subnet2",
-          "addressPrefix": "10.0.2.0/24"
-        }
-      ]
-    },
-    "publicIpName": {
-      "value": "publicip-sbx-landingzone-eastus-001"
-    },
-    "publicIpSku": {
-      "value": "Standard"
+      "vnetAddressPrefix": {
+        "value": "10.0.0.0/22"
+      },
+      "publicIpName": {
+        "value": "pip01"
+      },
+      "publicIpSku": {
+        "value": "Standard"
+      }
     }
   }
-}
