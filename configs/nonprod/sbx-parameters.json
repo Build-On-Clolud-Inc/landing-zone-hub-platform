@@ -8,6 +8,14 @@
       "resourceLocation": {
         "value": "eastus"
       },
+      "tags": {
+        "value": {
+          "environment": "platform",
+          "costCenter": "it",
+          "project": "landingzone",
+          "owner": "admin"
+        }
+      },
       "vnetName": {
         "value": "vnet-hub-sbx-landingzone-eastus-01"
       },
@@ -38,6 +46,15 @@
       },
       "bastionName": {
         "value": "bastion-sbx-landingzone-eastus-01"
-      }
+      },
+      "logAnalyticsWorkspaceName": {
+        "value": "law-sbx-landingzone-eastus-01"
+      },
+      "lawRetentionInDays": {
+        "value": 90
+      },
+      "keyVaultName": {
+        "value": "kv-sbx-landingzone-eastus-01"
     }
+  }
   }
