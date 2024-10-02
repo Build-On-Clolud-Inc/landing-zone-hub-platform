@@ -52,6 +52,8 @@
       },
       "lawRetentionInDays": {
         "value": 90
-      }
+      },
+      "keyVaultName": {
+        "value": "kv-sbx-landingzone-eastus-01"
     }
   }
