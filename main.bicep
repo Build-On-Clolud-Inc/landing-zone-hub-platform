@@ -32,6 +32,18 @@ param publicIpSku string
 @description('Optional. The name of the bastion.')
 param bastionName string
 
+@description('Optional. The name of the Log Analytics workspace.')
+param logAnalyticsWorkspaceName string
+
+@description('Optional. The retention period in days for Log Analytics data.')
+param lawRetentionInDays int
+
+@description('Optional. The name of the key vault.')
+param keyVaultName string
+
+@description('Optional. The tags for the Log Analytics workspace.')
+param tags object
+
 
 // General resources
 // =================
@@ -81,12 +93,74 @@ module bastion 'modules/bastion.bicep' = {
   }
 }
 
-//Subnets, nsg, route tables, Subnet for bastion /27
+module logAnalytics 'modules/law.bicep' = {
+  scope: hubrg  
+  name: 'logAnalyticsDeployment'
+  params: {
+    logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
+    location: resourceLocation
+    retentionInDays: lawRetentionInDays
+    tags: tags
+  }
+}
 
 //VM with private IP
+module pass 'modules/password.bicep' = {
+  scope: hubrg
+  name: 'pass1'
+  params: {
+    location: resourceLocation
+  }
+}
+
+module keyvault 'modules/keyvault.bicep' = {
+  name: 'kv-qwr-deployment'
+  scope: hubrg
+  params: {
+    location: resourceLocation
+    keyVaultName: keyVaultName
+    enabledForTemplateDeployment: true
+    virtualNetworkRules: [
+      {
+        id: vnet.outputs.subnet02Id
+        ignoreMissingVnetServiceEndpoint: true
+      }
+    ]
+    secrets: [
+      {
+        name: 'VMPassword'
+        value: pass.outputs.result
+      }
+    ]
+  }
+}
 
 
+module vm1 'modules/vm.bicep' = {
+  name: 'vm1'
+  scope: hubrg
+  params: {
+    location: resourceLocation
+    nicName: 'winnic'
+    subnetId: vnet.outputs.subnet02Id
+    vmName: 'vm1'
+    vmSize: 'Standard_B2s'
+    authenticationType: 'password'
+    adminUsername: 'adminuser'
+    adminPasswordOrPublicKey: pass.outputs.result
+    operatingSystem: 'Windows' 
+    operatingSystemSKU: 'winServer19' // Available values are "'win10','winServer19', 'ubuntu2004', 'ubuntu2004gen2'"    
+    WorkspaceId: logAnalytics.outputs.logAnalyticsWorkspaceId
+    WorkspaceKey: logAnalytics.outputs.logAnalyticsWorkspaceKey
+  }
+}
+
+
+
+//Subnets, nsg, route tables, Subnet for bastion /27
 
 //Firewalls
 
 //Firewall Rules
+
+//LAW
