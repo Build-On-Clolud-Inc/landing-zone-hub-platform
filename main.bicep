@@ -113,7 +113,7 @@ module pass 'modules/password.bicep' = {
   }
 }
 
-module keyvault 'modules/keyvault.bicep' = {
+module keyvault 'modules/keyVault.bicep' = {
   name: 'kv-qwr-deployment'
   scope: hubrg
   params: {
