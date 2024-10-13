@@ -104,7 +104,7 @@ module logAnalytics 'modules/law.bicep' = {
   }
 }
 
-//VM with private IP
+//password
 module pass 'modules/password.bicep' = {
   scope: hubrg
   name: 'pass1'
@@ -113,27 +113,27 @@ module pass 'modules/password.bicep' = {
   }
 }
 
-module keyvault 'modules/keyVault.bicep' = {
-  name: 'kv-qwr-deployment'
-  scope: hubrg
-  params: {
-    location: resourceLocation
-    keyVaultName: keyVaultName
-    enabledForTemplateDeployment: true
-    virtualNetworkRules: [
-      {
-        id: vnet.outputs.subnet02Id
-        ignoreMissingVnetServiceEndpoint: true
-      }
-    ]
-    secrets: [
-      {
-        name: 'VMPassword'
-        value: pass.outputs.result
-      }
-    ]
-  }
-}
+// module keyvault 'modules/keyVault.bicep' = {
+//   name: 'kv-qwr-deployment'
+//   scope: hubrg
+//   params: {
+//     location: resourceLocation
+//     keyVaultName: keyVaultName
+//     enabledForTemplateDeployment: true
+//     virtualNetworkRules: [
+//       {
+//         id: vnet.outputs.subnet02Id
+//         ignoreMissingVnetServiceEndpoint: true
+//       }
+//     ]
+//     secrets: [
+//       {
+//         name: 'VMPassword'
+//         value: pass.outputs.result
+//       }
+//     ]
+//   }
+// }
 
 
 module vm1 'modules/virtualMachine.bicep' = {
