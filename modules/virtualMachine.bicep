@@ -136,7 +136,7 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
       computerName: vmName
       adminUsername: adminUsername
       adminPassword: adminPasswordOrPublicKey
-      linuxConfiguration: ((authenticationType == 'password') ? json('null') : linuxConfiguration)
+      linuxConfiguration: ((authenticationType == 'password') ? null : linuxConfiguration)
     }
     storageProfile: {
       imageReference: {
@@ -160,8 +160,9 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
 }
 
 resource VmLinuxLaw 'Microsoft.Compute/virtualMachines/extensions@2021-04-01' = if (operatingSystem == 'Linux') {
-  name: '${vmName}/OmsAgentForLinux'
-  location: location
+  name: 'OmsAgentForLinux'
+  location: location  
+  parent: vm
   properties:{
     publisher: 'Microsoft.EnterpriseCloud.Monitoring'
     type: 'OmsAgentForLinux'
@@ -175,14 +176,12 @@ resource VmLinuxLaw 'Microsoft.Compute/virtualMachines/extensions@2021-04-01' = 
       workspaceKey: WorkspaceKey 
     }
   }
-  dependsOn:[
-    vm
-  ]
 }
 
 
 resource VmWindowsLaw 'Microsoft.Compute/virtualMachines/extensions@2021-04-01' = if (operatingSystem == 'Windows') {
-  name: '${vmName}/MicrosoftMonitoringAgent'
+  name: 'MicrosoftMonitoringAgent'
+  parent: vm
   location: location
   properties:{
     publisher: 'Microsoft.EnterpriseCloud.Monitoring'
@@ -196,7 +195,4 @@ resource VmWindowsLaw 'Microsoft.Compute/virtualMachines/extensions@2021-04-01' 
       workspaceKey: WorkspaceKey
     }
   }
-  dependsOn:[
-    vm
-  ]
 }

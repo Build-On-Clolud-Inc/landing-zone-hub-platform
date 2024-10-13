@@ -136,7 +136,7 @@ module keyvault 'modules/keyVault.bicep' = {
 }
 
 
-module vm1 'modules/vm.bicep' = {
+module vm1 'modules/virtualMachine.bicep' = {
   name: 'vm1'
   scope: hubrg
   params: {     
