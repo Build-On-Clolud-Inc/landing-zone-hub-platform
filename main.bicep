@@ -102,7 +102,7 @@ module keyVaultModule 'modules/keyVault.bicep' = {
    enabledForTemplateDeployment: true
    virtualNetworkRules:        [
      {
-              id: vnet.outputs.subnet02Id
+              id: '/subscriptions/7a79e189-21f1-4bbc-b88e-e8e95784d59f/resourceGroups/rg-sbx-landingzone-eastus-01/providers/Microsoft.Network/virtualNetworks/vnet-hub-sbx-landingzone-eastus-01/subnets/subnet1'//vnet.outputs.subnet02Id
               ignoreMissingVnetServiceEndpoint: true
             }
            ]
