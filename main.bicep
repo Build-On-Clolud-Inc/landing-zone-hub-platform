@@ -82,6 +82,8 @@ module vnet 'modules/virtualNetwork.bicep' = {
   }
 }
 
+output subnetId array = vnet.outputs.subnetId
+
 //make a call to the bastion module
 module bastion 'modules/bastion.bicep' = {
   scope: hubrg
@@ -89,7 +91,7 @@ module bastion 'modules/bastion.bicep' = {
   params: {
     bastionName: bastionName
     publicIpAddressId: pip.outputs.publicIpId
-    bastionSubnetId: vnet.outputs.subnet01Id
+    bastionSubnetId: vnet.outputs.subnetId[0].id
   }
 }
 
@@ -116,7 +118,7 @@ module vm1 'modules/virtualMachine.bicep' = {
   params: {     
     location: resourceLocation
     nicName: 'winnic'
-    subnetId: vnet.outputs.subnet02Id
+    subnetId: vnet.outputs.subnetId[1].id
     vmName: 'vm120241013'
     vmSize: 'Standard_B2s'
     authenticationType: 'password'
