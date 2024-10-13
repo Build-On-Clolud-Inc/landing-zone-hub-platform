@@ -1,5 +1,5 @@
-@description('Azure region of the deployment')
-param location string = resourceGroup().location
+@description('The location of the VM.')
+param location string
 
 // NIC Params
 @description('Network Interface name')

@@ -139,11 +139,11 @@ module keyvault 'modules/keyVault.bicep' = {
 module vm1 'modules/vm.bicep' = {
   name: 'vm1'
   scope: hubrg
-  params: {
+  params: {     
     location: resourceLocation
     nicName: 'winnic'
     subnetId: vnet.outputs.subnet02Id
-    vmName: 'vm1'
+    vmName: 'vm120241013'
     vmSize: 'Standard_B2s'
     authenticationType: 'password'
     adminUsername: 'adminuser'
@@ -159,11 +159,15 @@ module vm1 'modules/vm.bicep' = {
 //we provisioned kv but looks like there is a problem with either log analytics shared key 
 //ajinkya saying to delete the rg and reprovision it
 //we need to figure the key to log analytics that we pass to vm wy there is a problem
-   
-//Subnets, nsg, route tables, Subnet for bastion /27
 
-//Firewalls
+
+
+//Firewalls : Subnets, nsg, route tables
+
 
 //Firewall Rules
 
-//LAW
+//Host your org's GitHub runners in Azure Container Apps
+//https://blog.xmi.fr/posts/github-runner-container-app-part1/
+
+//After hub, on a separate pipeline, we will deploy spoke resources
