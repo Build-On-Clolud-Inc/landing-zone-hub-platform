@@ -101,10 +101,10 @@ module keyVaultModule 'modules/keyVault.bicep' = {
    keyVaultName: keyVaultName
    enabledForTemplateDeployment: true
    virtualNetworkRules:        [
-     // {
-     //          id: vnet.outputs.subnet02Id
-     //          ignoreMissingVnetServiceEndpoint: true
-     //        }
+     {
+              id: vnet.outputs.subnet02Id
+              ignoreMissingVnetServiceEndpoint: true
+            }
            ]
    secrets: []
  }
