@@ -93,6 +93,26 @@ module bastion 'modules/bastion.bicep' = {
   }
 }
 
+module vm1 'modules/virtualMachine.bicep' = {
+  name: 'vm1'
+  scope: hubrg
+  params: {     
+    location: resourceLocation
+    nicName: 'winnic'
+    subnetId: vnet.outputs.subnet02Id
+    vmName: 'vm120241013'
+    vmSize: 'Standard_B2s'
+    authenticationType: 'password'
+    adminUsername: 'adminuser'
+    adminPasswordOrPublicKey: 'P@ssW0rd1032543'//pass.outputs.result
+    //operatingSystem: 'Windows' 
+    operatingSystemSKU: 'winServer19' // Available values are "'win10','winServer19', 'ubuntu2004', 'ubuntu2004gen2'"    
+    //WorkspaceId: logAnalytics.outputs.logAnalyticsWorkspaceId
+    //WorkspaceKey: logAnalytics.outputs.logAnalyticsWorkspaceKey
+  }
+}
+
+
 module logAnalytics 'modules/law.bicep' = {
   scope: hubrg  
   name: 'logAnalyticsDeployment'
@@ -136,24 +156,6 @@ module logAnalytics 'modules/law.bicep' = {
 // }
 
 
-module vm1 'modules/virtualMachine.bicep' = {
-  name: 'vm1'
-  scope: hubrg
-  params: {     
-    location: resourceLocation
-    nicName: 'winnic'
-    subnetId: vnet.outputs.subnet02Id
-    vmName: 'vm120241013'
-    vmSize: 'Standard_B2s'
-    authenticationType: 'password'
-    adminUsername: 'adminuser'
-    adminPasswordOrPublicKey: 'P@ssW0rd1032543'//pass.outputs.result
-    //operatingSystem: 'Windows' 
-    operatingSystemSKU: 'winServer19' // Available values are "'win10','winServer19', 'ubuntu2004', 'ubuntu2004gen2'"    
-    //WorkspaceId: logAnalytics.outputs.logAnalyticsWorkspaceId
-    //WorkspaceKey: logAnalytics.outputs.logAnalyticsWorkspaceKey
-  }
-}
 
 //Latest
 //we provisioned kv but looks like there is a problem with either log analytics shared key 
