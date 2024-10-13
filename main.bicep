@@ -133,27 +133,27 @@ module logAnalytics 'modules/law.bicep' = {
 //   }
 // }
 
-// module keyvault 'modules/keyVault.bicep' = {
-//   name: 'kv-qwr-deployment'
-//   scope: hubrg
-//   params: {
-//     location: resourceLocation
-//     keyVaultName: keyVaultName
-//     enabledForTemplateDeployment: true
-//     virtualNetworkRules: [
-//       {
-//         id: vnet.outputs.subnet02Id
-//         ignoreMissingVnetServiceEndpoint: true
-//       }
-//     ]
-//     secrets: [
-//       {
-//         name: 'VMPassword'
-//         value: pass.outputs.result
-//       }
-//     ]
-//   }
-// }
+module keyvault 'modules/keyVault.bicep' = {
+  name: 'kv-qwr-deployment'
+  scope: hubrg
+  params: {
+    location: resourceLocation
+    keyVaultName: keyVaultName
+    enabledForTemplateDeployment: true
+    virtualNetworkRules: [
+      {
+        id: vnet.outputs.subnet02Id
+        ignoreMissingVnetServiceEndpoint: true
+      }
+    ]
+    secrets: [
+      // {
+      //   name: 'VMPassword'
+      //   value: pass.outputs.result
+      // }
+    ]
+  }
+}
 
 
 
