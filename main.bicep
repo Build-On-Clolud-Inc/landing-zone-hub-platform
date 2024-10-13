@@ -155,8 +155,11 @@ module vm1 'modules/vm.bicep' = {
   }
 }
 
-
-
+//Latest
+//we provisioned kv but looks like there is a problem with either log analytics shared key 
+//ajinkya saying to delete the rg and reprovision it
+//we need to figure the key to log analytics that we pass to vm wy there is a problem
+   
 //Subnets, nsg, route tables, Subnet for bastion /27
 
 //Firewalls
