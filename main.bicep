@@ -60,69 +60,79 @@ resource hubrg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: resourceLocation
 }
 
-
-module pip 'modules/pip.bicep' = {
+module keyVaultModule 'modules/keyVault.bicep' = {
+  name: 'kv-qwr-deployment'
   scope: hubrg
-  name: 'pip01'
-  params: {
-    publicIpName: publicIpName
-    location: resourceLocation
-    publicIpSku: publicIpSku
-  }
+ params: {
+   location: resourceLocation
+   keyVaultName: keyVaultName
+   enabledForTemplateDeployment: true
+   virtualNetworkRules:[]
+   secrets:[]
+ }
 }
+// module pip 'modules/pip.bicep' = {
+//   scope: hubrg
+//   name: 'pip01'
+//   params: {
+//     publicIpName: publicIpName
+//     location: resourceLocation
+//     publicIpSku: publicIpSku
+//   }
+// }
 
-module vnet 'modules/virtualNetwork.bicep' = {
-  scope: hubrg
-  name: 'vnet01'
-  params: {
-    virtualNetworkName: vnetName
-    virtualNetworkLocation: resourceLocation
-    addressPrefix: vnetAddressPrefix
-    subnets: subnets
-  }
-}
+// module vnet 'modules/virtualNetwork.bicep' = {
+//   scope: hubrg
+//   name: 'vnet01'
+//   params: {
+//     virtualNetworkName: vnetName
+//     virtualNetworkLocation: resourceLocation
+//     addressPrefix: vnetAddressPrefix
+//     subnets: subnets
+//   }
+// }
 
-//make a call to the bastion module
-module bastion 'modules/bastion.bicep' = {
-  scope: hubrg
-  name: 'bastion01'
-  params: {
-    bastionName: bastionName
-    publicIpAddressId: pip.outputs.publicIpId
-    bastionSubnetId: vnet.outputs.subnet01Id
-  }
-}
+// //make a call to the bastion module
+// module bastion 'modules/bastion.bicep' = {
+//   scope: hubrg
+//   name: 'bastion01'
+//   params: {
+//     bastionName: bastionName
+//     publicIpAddressId: pip.outputs.publicIpId
+//     bastionSubnetId: vnet.outputs.subnet01Id
+//   }
+// }
 
-module vm1 'modules/virtualMachine.bicep' = {
-  name: 'vm1'
-  scope: hubrg
-  params: {     
-    location: resourceLocation
-    nicName: 'winnic'
-    subnetId: vnet.outputs.subnet02Id
-    vmName: 'vm120241013'
-    vmSize: 'Standard_B2s'
-    authenticationType: 'password'
-    adminUsername: 'adminuser'
-    adminPasswordOrPublicKey: 'P@ssW0rd1032543'//pass.outputs.result
-    //operatingSystem: 'Windows' 
-    operatingSystemSKU: 'winServer19' // Available values are "'win10','winServer19', 'ubuntu2004', 'ubuntu2004gen2'"    
-    //WorkspaceId: logAnalytics.outputs.logAnalyticsWorkspaceId
-    //WorkspaceKey: logAnalytics.outputs.logAnalyticsWorkspaceKey
-  }
-}
+// module vm1 'modules/virtualMachine.bicep' = {
+//   name: 'vm1'
+//   scope: hubrg
+//   params: {     
+//     location: resourceLocation
+//     nicName: 'winnic'
+//     subnetId: vnet.outputs.subnet02Id
+//     vmName: 'vm120241013'
+//     vmSize: 'Standard_B2s'
+//     authenticationType: 'password'
+//     adminUsername: 'adminuser'
+//     adminPasswordOrPublicKey: 'P@ssW0rd1032543'//pass.outputs.result
+//     //operatingSystem: 'Windows' 
+//     operatingSystemSKU: 'winServer19' // Available values are "'win10','winServer19', 'ubuntu2004', 'ubuntu2004gen2'"    
+//     //WorkspaceId: logAnalytics.outputs.logAnalyticsWorkspaceId
+//     //WorkspaceKey: logAnalytics.outputs.logAnalyticsWorkspaceKey
+//   }
+// }
 
 
-module logAnalytics 'modules/law.bicep' = {
-  scope: hubrg  
-  name: 'logAnalyticsDeployment'
-  params: {
-    logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
-    location: resourceLocation
-    retentionInDays: lawRetentionInDays
-    tags: tags
-  }
-}
+// module logAnalytics 'modules/law.bicep' = {
+//   scope: hubrg  
+//   name: 'logAnalyticsDeployment'
+//   params: {
+//     logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
+//     location: resourceLocation
+//     retentionInDays: lawRetentionInDays
+//     tags: tags
+//   }
+// }
 
 //password
 // module pass 'modules/password.bicep' = {
@@ -133,20 +143,7 @@ module logAnalytics 'modules/law.bicep' = {
 //   }
 // }
 
-module keyVaultModule 'modules/keyVault.bicep' = {
-   name: 'kv-qwr-deployment'
-   scope: hubrg
-  params: {
-    location: resourceLocation
-    keyVaultName: keyVaultName
-    enabledForTemplateDeployment: true
-    virtualNetworkRules:        [{
-               id: vnet.outputs.subnet02Id
-               ignoreMissingVnetServiceEndpoint: true
-             }]
-    secrets: []
-  }
-}
+
 
 // module keyvault 'modules/keyVault.bicep' = {
 //   name: 'kv-qwr-deployment'
