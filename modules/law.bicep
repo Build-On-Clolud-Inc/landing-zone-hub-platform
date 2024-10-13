@@ -25,10 +25,10 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06
   tags: tags
 }
 
-resource logAnalyticsSharedKeys 'Microsoft.OperationalInsights/workspaces/sharedKeys@2021-06-01' = {
-  name: 'listKeys'
-  parent: logAnalyticsWorkspace
-}
+// resource logAnalyticsSharedKeys 'Microsoft.OperationalInsights/workspaces/sharedKeys@2021-06-01' = {
+//   name: 'listKeys'
+//   parent: logAnalyticsWorkspace
+// }
 
 output logAnalyticsWorkspaceId string = logAnalyticsWorkspace.id
-output logAnalyticsWorkspaceKey string = logAnalyticsSharedKeys.properties.primarySharedKey
+//output logAnalyticsWorkspaceKey string = logAnalyticsSharedKeys.properties.primarySharedKey
