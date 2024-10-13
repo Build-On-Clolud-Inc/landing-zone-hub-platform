@@ -105,13 +105,13 @@ module logAnalytics 'modules/law.bicep' = {
 }
 
 //password
-module pass 'modules/password.bicep' = {
-  scope: hubrg
-  name: 'pass1'
-  params: {
-    location: resourceLocation
-  }
-}
+// module pass 'modules/password.bicep' = {
+//   scope: hubrg
+//   name: 'pass1'
+//   params: {
+//     location: resourceLocation
+//   }
+// }
 
 // module keyvault 'modules/keyVault.bicep' = {
 //   name: 'kv-qwr-deployment'
@@ -147,7 +147,7 @@ module vm1 'modules/virtualMachine.bicep' = {
     vmSize: 'Standard_B2s'
     authenticationType: 'password'
     adminUsername: 'adminuser'
-    adminPasswordOrPublicKey: pass.outputs.result
+    adminPasswordOrPublicKey: 'P@ssW0rd1032543'//pass.outputs.result
     //operatingSystem: 'Windows' 
     operatingSystemSKU: 'winServer19' // Available values are "'win10','winServer19', 'ubuntu2004', 'ubuntu2004gen2'"    
     //WorkspaceId: logAnalytics.outputs.logAnalyticsWorkspaceId
