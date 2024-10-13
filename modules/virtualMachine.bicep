@@ -41,12 +41,12 @@ var linuxConfiguration = {
   }
 }
 
-@description('Select the OS type to deploy:')
-@allowed([
-  'Windows'
-  'Linux'
-])
-param operatingSystem string
+// @description('Select the OS type to deploy:')
+// @allowed([
+//   'Windows'
+//   'Linux'
+// ])
+// param operatingSystem string
 
 @description('The OS version (SKU):') 
 @allowed([ 
@@ -86,19 +86,19 @@ var osImageReference = {
 }
 
 
-@allowed([
-  'Dynamic'
-  'Static'
-])
-@description('IP Allocation method for NIC') 
-param ipAllocationMethod string = 'Dynamic'
+// @allowed([
+//   'Dynamic'
+//   'Static'
+// ])
+// @description('IP Allocation method for NIC') 
+// param ipAllocationMethod string = 'Dynamic'
 
-@description('Static IP Address') 
-param staticIpAddress string = ''
+// @description('Static IP Address') 
+// param staticIpAddress string = ''
 
 
-param WorkspaceId string
-param WorkspaceKey string
+// param WorkspaceId string
+// param WorkspaceKey string
 
 // https://github.com/Azure/bicep/issues/387
 resource nic 'Microsoft.Network/networkInterfaces@2020-06-01' = {
@@ -109,12 +109,10 @@ resource nic 'Microsoft.Network/networkInterfaces@2020-06-01' = {
       {
         name: 'ipconfig'
         properties: {
-          primary: true
-          privateIPAllocationMethod: ipAllocationMethod
-          privateIPAddress: staticIpAddress
           subnet: {
             id: subnetId
           }
+          privateIPAllocationMethod: 'Dynamic'          
         }
       }
     ]
@@ -125,9 +123,6 @@ resource nic 'Microsoft.Network/networkInterfaces@2020-06-01' = {
 resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
   name: vmName
   location: location
-  identity: {
-    type: 'SystemAssigned'
-  }
   properties: {
     hardwareProfile: {
       vmSize: vmSize
@@ -159,40 +154,40 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
   }
 }
 
-resource VmLinuxLaw 'Microsoft.Compute/virtualMachines/extensions@2021-04-01' = if (operatingSystem == 'Linux') {
-  name: 'OmsAgentForLinux'
-  location: location  
-  parent: vm
-  properties:{
-    publisher: 'Microsoft.EnterpriseCloud.Monitoring'
-    type: 'OmsAgentForLinux'
-    typeHandlerVersion: '1.13'
-    autoUpgradeMinorVersion: true
-    settings:{
-      workspaceId: WorkspaceId
-      stopOnMultipleConnections: false
-    }
-    protectedSettings:{
-      workspaceKey: WorkspaceKey 
-    }
-  }
-}
+// resource VmLinuxLaw 'Microsoft.Compute/virtualMachines/extensions@2021-04-01' = if (operatingSystem == 'Linux') {
+//   name: 'OmsAgentForLinux'
+//   location: location  
+//   parent: vm
+//   properties:{
+//     publisher: 'Microsoft.EnterpriseCloud.Monitoring'
+//     type: 'OmsAgentForLinux'
+//     typeHandlerVersion: '1.13'
+//     autoUpgradeMinorVersion: true
+//     settings:{
+//       workspaceId: WorkspaceId
+//       stopOnMultipleConnections: false
+//     }
+//     protectedSettings:{
+//       workspaceKey: WorkspaceKey 
+//     }
+//   }
+// }
 
 
-resource VmWindowsLaw 'Microsoft.Compute/virtualMachines/extensions@2021-04-01' = if (operatingSystem == 'Windows') {
-  name: 'MicrosoftMonitoringAgent'
-  parent: vm
-  location: location
-  properties:{
-    publisher: 'Microsoft.EnterpriseCloud.Monitoring'
-    type: 'MicrosoftMonitoringAgent'
-    typeHandlerVersion: '1.0'
-    autoUpgradeMinorVersion: true
-    settings:{
-      workspaceId: WorkspaceId
-    }
-    protectedSettings:{
-      workspaceKey: WorkspaceKey
-    }
-  }
-}
+// resource VmWindowsLaw 'Microsoft.Compute/virtualMachines/extensions@2021-04-01' = if (operatingSystem == 'Windows') {
+//   name: 'MicrosoftMonitoringAgent'
+//   parent: vm
+//   location: location
+//   properties:{
+//     publisher: 'Microsoft.EnterpriseCloud.Monitoring'
+//     type: 'MicrosoftMonitoringAgent'
+//     typeHandlerVersion: '1.0'
+//     autoUpgradeMinorVersion: true
+//     settings:{
+//       workspaceId: WorkspaceId
+//     }
+//     protectedSettings:{
+//       workspaceKey: WorkspaceKey
+//     }
+//   }
+// }

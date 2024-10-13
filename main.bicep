@@ -148,10 +148,10 @@ module vm1 'modules/virtualMachine.bicep' = {
     authenticationType: 'password'
     adminUsername: 'adminuser'
     adminPasswordOrPublicKey: pass.outputs.result
-    operatingSystem: 'Windows' 
+    //operatingSystem: 'Windows' 
     operatingSystemSKU: 'winServer19' // Available values are "'win10','winServer19', 'ubuntu2004', 'ubuntu2004gen2'"    
-    WorkspaceId: logAnalytics.outputs.logAnalyticsWorkspaceId
-    WorkspaceKey: logAnalytics.outputs.logAnalyticsWorkspaceKey
+    //WorkspaceId: logAnalytics.outputs.logAnalyticsWorkspaceId
+    //WorkspaceKey: logAnalytics.outputs.logAnalyticsWorkspaceKey
   }
 }
 
