@@ -133,7 +133,7 @@ module logAnalytics 'modules/law.bicep' = {
 //   }
 // }
 
-module keyVaultModule 'modules/keyvault.bicep' = {
+module keyVaultModule 'modules/keyVault.bicep' = {
    name: 'kv-qwr-deployment'
    scope: hubrg
   params: {
