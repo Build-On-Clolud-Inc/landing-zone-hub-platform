@@ -96,22 +96,23 @@ module bastion 'modules/bastion.bicep' = {
   }
 }
 
-// module keyVaultModule 'modules/keyVault.bicep' = {
-//   name: 'kv-qwr-deployment'
-//   scope: hubrg
-//  params: {
-//    location: resourceLocation
-//    keyVaultName: keyVaultName
-//    enabledForTemplateDeployment: true
-//    virtualNetworkRules:        [
-//      {
-//               id: '/subscriptions/7a79e189-21f1-4bbc-b88e-e8e95784d59f/resourceGroups/rg-sbx-landingzone-eastus-01/providers/Microsoft.Network/virtualNetworks/vnet-hub-sbx-landingzone-eastus-01/subnets/subnet1'//vnet.outputs.subnet02Id
-//               ignoreMissingVnetServiceEndpoint: true
-//             }
-//            ]
-//    secrets: []
-//  }
-//}
+module keyVaultModule 'modules/keyVault.bicep' = {
+  name: 'kv-qwr-deployment'
+  scope: hubrg
+ params: {
+   location: resourceLocation
+   keyVaultName: keyVaultName
+   enabledForTemplateDeployment: true
+   virtualNetworkRules:        [
+     {
+              id: '/subscriptions/7a79e189-21f1-4bbc-b88e-e8e95784d59f/resourceGroups/rg-sbx-landingzone-eastus-01/providers/Microsoft.Network/virtualNetworks/vnet-hub-sbx-landingzone-eastus-01/subnets/subnet1'//vnet.outputs.subnet02Id
+              ignoreMissingVnetServiceEndpoint: true
+            }
+           ]
+   secrets: []
+ }
+}
+
 
 // module vm1 'modules/virtualMachine.bicep' = {
 //   name: 'vm1'
