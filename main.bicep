@@ -82,85 +82,116 @@ module vnet 'modules/virtualNetwork.bicep' = {
   }
 }
 
+output subnetId array = vnet.outputs.subnetId
+
 //make a call to the bastion module
 module bastion 'modules/bastion.bicep' = {
   scope: hubrg
-  name: 'bastion01'
+  name: 'bastion20241027'
   params: {
     bastionName: bastionName
     publicIpAddressId: pip.outputs.publicIpId
-    bastionSubnetId: vnet.outputs.subnet01Id
-  }
-}
-
-module logAnalytics 'modules/law.bicep' = {
-  scope: hubrg  
-  name: 'logAnalyticsDeployment'
-  params: {
-    logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
-    location: resourceLocation
-    retentionInDays: lawRetentionInDays
-    tags: tags
-  }
-}
-
-//VM with private IP
-module pass 'modules/password.bicep' = {
-  scope: hubrg
-  name: 'pass1'
-  params: {
+    bastionSubnetId: vnet.outputs.subnetId[0].id
     location: resourceLocation
   }
 }
 
-module keyvault 'modules/keyVault.bicep' = {
-  name: 'kv-qwr-deployment'
-  scope: hubrg
-  params: {
-    location: resourceLocation
-    keyVaultName: keyVaultName
-    enabledForTemplateDeployment: true
-    virtualNetworkRules: [
-      {
-        id: vnet.outputs.subnet02Id
-        ignoreMissingVnetServiceEndpoint: true
-      }
-    ]
-    secrets: [
-      {
-        name: 'VMPassword'
-        value: pass.outputs.result
-      }
-    ]
-  }
-}
+// module keyVaultModule 'modules/keyVault.bicep' = {
+//   name: 'kv-qwr-deployment'
+//   scope: hubrg
+//  params: {
+//    location: resourceLocation
+//    keyVaultName: keyVaultName
+//    enabledForTemplateDeployment: true
+//    virtualNetworkRules:        [
+//      {
+//               id: '/subscriptions/7a79e189-21f1-4bbc-b88e-e8e95784d59f/resourceGroups/rg-sbx-landingzone-eastus-01/providers/Microsoft.Network/virtualNetworks/vnet-hub-sbx-landingzone-eastus-01/subnets/subnet1'//vnet.outputs.subnet02Id
+//               ignoreMissingVnetServiceEndpoint: true
+//             }
+//            ]
+//    secrets: []
+//  }
+//}
+
+// module vm1 'modules/virtualMachine.bicep' = {
+//   name: 'vm1'
+//   scope: hubrg
+//   params: {     
+//     location: resourceLocation
+//     nicName: 'winnic'
+//     subnetId: vnet.outputs.subnetId[1].id
+//     vmName: 'vm120241013'
+//     vmSize: 'Standard_B2s'
+//     authenticationType: 'password'
+//     adminUsername: 'adminuser'
+//     adminPasswordOrPublicKey: 'P@ssW0rd1032543'//pass.outputs.result
+//     //operatingSystem: 'Windows' 
+//     operatingSystemSKU: 'winServer19' // Available values are "'win10','winServer19', 'ubuntu2004', 'ubuntu2004gen2'"    
+//     //WorkspaceId: logAnalytics.outputs.logAnalyticsWorkspaceId
+//     //WorkspaceKey: logAnalytics.outputs.logAnalyticsWorkspaceKey
+//   }
+// }
 
 
-module vm1 'modules/vm.bicep' = {
-  name: 'vm1'
-  scope: hubrg
-  params: {
-    location: resourceLocation
-    nicName: 'winnic'
-    subnetId: vnet.outputs.subnet02Id
-    vmName: 'vm1'
-    vmSize: 'Standard_B2s'
-    authenticationType: 'password'
-    adminUsername: 'adminuser'
-    adminPasswordOrPublicKey: pass.outputs.result
-    operatingSystem: 'Windows' 
-    operatingSystemSKU: 'winServer19' // Available values are "'win10','winServer19', 'ubuntu2004', 'ubuntu2004gen2'"    
-    WorkspaceId: logAnalytics.outputs.logAnalyticsWorkspaceId
-    WorkspaceKey: logAnalytics.outputs.logAnalyticsWorkspaceKey
-  }
-}
+// module logAnalytics 'modules/law.bicep' = {
+//   scope: hubrg  
+//   name: 'logAnalyticsDeployment'
+//   params: {
+//     logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
+//     location: resourceLocation
+//     retentionInDays: lawRetentionInDays
+//     tags: tags
+//   }
+// }
+
+//password
+// module pass 'modules/password.bicep' = {
+//   scope: hubrg
+//   name: 'pass1'
+//   params: {
+//     location: resourceLocation
+//   }
+// }
 
 
 
-//Subnets, nsg, route tables, Subnet for bastion /27
+// module keyvault 'modules/keyVault.bicep' = {
+//   name: 'kv-qwr-deployment'
+//   scope: hubrg
+//   params: {
+//     location: resourceLocation
+//     keyVaultName: keyVaultName
+//     enabledForTemplateDeployment: true
+//     virtualNetworkRules: [
+//       {
+//         id: vnet.outputs.subnet02Id
+//         ignoreMissingVnetServiceEndpoint: true
+//       }
+//     ]
+//     secrets: [
+//       // {
+//       //   name: 'VMPassword'
+//       //   value: pass.outputs.result
+//       // }
+//     ]
+//   }
+// }
 
-//Firewalls
+
+
+//Latest
+//we provisioned kv but looks like there is a problem with either log analytics shared key 
+//ajinkya saying to delete the rg and reprovision it
+//we need to figure the key to log analytics that we pass to vm why there is a problem
+
+
+
+//Firewalls : Subnets, nsg, route tables
+
 
 //Firewall Rules
 
-//LAW
+//Host your org's GitHub runners in Azure Container Apps
+//https://blog.xmi.fr/posts/github-runner-container-app-part1/
+
+//After hub, on a separate pipeline, we will deploy spoke resources

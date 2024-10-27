@@ -1,5 +1,5 @@
-@description('Azure region of the deployment')
-param location string = resourceGroup().location
+@description('The location of the VM.')
+param location string
 
 // NIC Params
 @description('Network Interface name')
@@ -41,12 +41,12 @@ var linuxConfiguration = {
   }
 }
 
-@description('Select the OS type to deploy:')
-@allowed([
-  'Windows'
-  'Linux'
-])
-param operatingSystem string
+// @description('Select the OS type to deploy:')
+// @allowed([
+//   'Windows'
+//   'Linux'
+// ])
+// param operatingSystem string
 
 @description('The OS version (SKU):') 
 @allowed([ 
@@ -86,19 +86,19 @@ var osImageReference = {
 }
 
 
-@allowed([
-  'Dynamic'
-  'Static'
-])
-@description('IP Allocation method for NIC') 
-param ipAllocationMethod string = 'Dynamic'
+// @allowed([
+//   'Dynamic'
+//   'Static'
+// ])
+// @description('IP Allocation method for NIC') 
+// param ipAllocationMethod string = 'Dynamic'
 
-@description('Static IP Address') 
-param staticIpAddress string = ''
+// @description('Static IP Address') 
+// param staticIpAddress string = ''
 
 
-param WorkspaceId string
-param WorkspaceKey string
+// param WorkspaceId string
+// param WorkspaceKey string
 
 // https://github.com/Azure/bicep/issues/387
 resource nic 'Microsoft.Network/networkInterfaces@2020-06-01' = {
@@ -109,12 +109,10 @@ resource nic 'Microsoft.Network/networkInterfaces@2020-06-01' = {
       {
         name: 'ipconfig'
         properties: {
-          primary: true
-          privateIPAllocationMethod: ipAllocationMethod
-          privateIPAddress: staticIpAddress
           subnet: {
             id: subnetId
           }
+          privateIPAllocationMethod: 'Dynamic'          
         }
       }
     ]
@@ -125,9 +123,6 @@ resource nic 'Microsoft.Network/networkInterfaces@2020-06-01' = {
 resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
   name: vmName
   location: location
-  identity: {
-    type: 'SystemAssigned'
-  }
   properties: {
     hardwareProfile: {
       vmSize: vmSize
@@ -136,7 +131,7 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
       computerName: vmName
       adminUsername: adminUsername
       adminPassword: adminPasswordOrPublicKey
-      linuxConfiguration: ((authenticationType == 'password') ? json('null') : linuxConfiguration)
+      linuxConfiguration: ((authenticationType == 'password') ? null : linuxConfiguration)
     }
     storageProfile: {
       imageReference: {
@@ -159,44 +154,40 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
   }
 }
 
-resource VmLinuxLaw 'Microsoft.Compute/virtualMachines/extensions@2021-04-01' = if (operatingSystem == 'Linux') {
-  name: '${vmName}/OmsAgentForLinux'
-  location: location
-  properties:{
-    publisher: 'Microsoft.EnterpriseCloud.Monitoring'
-    type: 'OmsAgentForLinux'
-    typeHandlerVersion: '1.13'
-    autoUpgradeMinorVersion: true
-    settings:{
-      workspaceId: WorkspaceId
-      stopOnMultipleConnections: false
-    }
-    protectedSettings:{
-      workspaceKey: WorkspaceKey 
-    }
-  }
-  dependsOn:[
-    vm
-  ]
-}
+// resource VmLinuxLaw 'Microsoft.Compute/virtualMachines/extensions@2021-04-01' = if (operatingSystem == 'Linux') {
+//   name: 'OmsAgentForLinux'
+//   location: location  
+//   parent: vm
+//   properties:{
+//     publisher: 'Microsoft.EnterpriseCloud.Monitoring'
+//     type: 'OmsAgentForLinux'
+//     typeHandlerVersion: '1.13'
+//     autoUpgradeMinorVersion: true
+//     settings:{
+//       workspaceId: WorkspaceId
+//       stopOnMultipleConnections: false
+//     }
+//     protectedSettings:{
+//       workspaceKey: WorkspaceKey 
+//     }
+//   }
+// }
 
 
-resource VmWindowsLaw 'Microsoft.Compute/virtualMachines/extensions@2021-04-01' = if (operatingSystem == 'Windows') {
-  name: '${vmName}/MicrosoftMonitoringAgent'
-  location: location
-  properties:{
-    publisher: 'Microsoft.EnterpriseCloud.Monitoring'
-    type: 'MicrosoftMonitoringAgent'
-    typeHandlerVersion: '1.0'
-    autoUpgradeMinorVersion: true
-    settings:{
-      workspaceId: WorkspaceId
-    }
-    protectedSettings:{
-      workspaceKey: WorkspaceKey
-    }
-  }
-  dependsOn:[
-    vm
-  ]
-}
+// resource VmWindowsLaw 'Microsoft.Compute/virtualMachines/extensions@2021-04-01' = if (operatingSystem == 'Windows') {
+//   name: 'MicrosoftMonitoringAgent'
+//   parent: vm
+//   location: location
+//   properties:{
+//     publisher: 'Microsoft.EnterpriseCloud.Monitoring'
+//     type: 'MicrosoftMonitoringAgent'
+//     typeHandlerVersion: '1.0'
+//     autoUpgradeMinorVersion: true
+//     settings:{
+//       workspaceId: WorkspaceId
+//     }
+//     protectedSettings:{
+//       workspaceKey: WorkspaceKey
+//     }
+//   }
+// }
