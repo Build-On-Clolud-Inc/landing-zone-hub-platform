@@ -114,25 +114,26 @@ module keyVaultModule 'modules/keyVault.bicep' = {
  }
 }
 
+output subnetId2 string = vnet.outputs.subnetId[1].id
 
-module vm1 'modules/virtualMachine.bicep' = {
-  name: 'vm1'
-  scope: hubrg
-  params: {     
-    location: resourceLocation
-    nicName: 'winnic'
-    subnetId: vnet.outputs.subnetId[1].id
-    vmName: 'vm120241013'
-    vmSize: 'Standard_B2s'
-    authenticationType: 'password'
-    adminUsername: 'adminuser'
-    adminPasswordOrPublicKey: 'P@ssW0rd1032543'//pass.outputs.result
-    //operatingSystem: 'Windows' 
-    operatingSystemSKU: 'winServer19' // Available values are "'win10','winServer19', 'ubuntu2004', 'ubuntu2004gen2'"    
-    //WorkspaceId: logAnalytics.outputs.logAnalyticsWorkspaceId
-    //WorkspaceKey: logAnalytics.outputs.logAnalyticsWorkspaceKey
-  }
-}
+// module vm1 'modules/virtualMachine.bicep' = {
+//   name: 'vm1'
+//   scope: hubrg
+//   params: {     
+//     location: resourceLocation
+//     nicName: 'winnic'
+//     subnetId: vnet.outputs.subnetId[1].id
+//     vmName: 'vm120241013'
+//     vmSize: 'Standard_B2s'
+//     authenticationType: 'password'
+//     adminUsername: 'adminuser'
+//     adminPasswordOrPublicKey: 'P@ssW0rd1032543'//pass.outputs.result
+//     //operatingSystem: 'Windows' 
+//     operatingSystemSKU: 'winServer19' // Available values are "'win10','winServer19', 'ubuntu2004', 'ubuntu2004gen2'"    
+//     //WorkspaceId: logAnalytics.outputs.logAnalyticsWorkspaceId
+//     //WorkspaceKey: logAnalytics.outputs.logAnalyticsWorkspaceKey
+//   }
+// }
 
 
 // module logAnalytics 'modules/law.bicep' = {
