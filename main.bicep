@@ -114,7 +114,12 @@ module keyVaultModule 'modules/keyVault.bicep' = {
  }
 }
 
-output subnetId2 string = vnet.outputs.subnetId[0].id
+output EhsanOutput0 string = vnet.outputs.subnetId[0].id
+output EhsanOutput1 string = vnet.outputs.subnetId[1].id
+
+
+//we tried to deploy the VM, thee is an issue with :subnetId: vnet.outputs.subnetId[1].id
+
 
 // module vm1 'modules/virtualMachine.bicep' = {
 //   name: 'vm1'

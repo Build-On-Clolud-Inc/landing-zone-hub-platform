@@ -26,6 +26,6 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-02-01' = {
 }
 
 output virtualNetworkId string = virtualNetwork.id
-output subnetId array = [ for i in range(0,1): {
+output subnetId array = [ for i in range(0,length(subnets)): {
   id: virtualNetwork.properties.subnets[i].id
 }]
