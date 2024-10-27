@@ -92,6 +92,7 @@ module bastion 'modules/bastion.bicep' = {
     bastionName: bastionName
     publicIpAddressId: pip.outputs.publicIpId
     bastionSubnetId: vnet.outputs.subnetId[0].id
+    location: resourceLocation
   }
 }
 
