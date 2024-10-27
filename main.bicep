@@ -109,7 +109,8 @@ module keyVaultModule 'modules/keyVault.bicep' = {
               ignoreMissingVnetServiceEndpoint: true
             }
            ]
-   secrets: []
+   secrets: []            
+   accessPolicies: []   
  }
 }
 

@@ -3,6 +3,7 @@ param keyVaultName string
 param enabledForTemplateDeployment bool = true
 param virtualNetworkRules array = []
 param secrets array = []
+param accessPolicies array = []
 
 resource keyVault 'Microsoft.KeyVault/vaults@2021-04-01-preview' = {
   name: keyVaultName
@@ -17,6 +18,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2021-04-01-preview' = {
     networkAcls: {
       virtualNetworkRules: virtualNetworkRules
     }
+    accessPolicies: accessPolicies
   }
 }
 
