@@ -114,7 +114,7 @@ module keyVaultModule 'modules/keyVault.bicep' = {
  }
 }
 
-output subnetId2 string = vnet.outputs.subnetId[1].id
+output subnetId2 string = vnet.outputs.subnetId[0].id
 
 // module vm1 'modules/virtualMachine.bicep' = {
 //   name: 'vm1'
