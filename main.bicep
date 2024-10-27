@@ -87,7 +87,7 @@ output subnetId array = vnet.outputs.subnetId
 //make a call to the bastion module
 module bastion 'modules/bastion.bicep' = {
   scope: hubrg
-  name: 'bastion01'
+  name: 'bastion001'
   params: {
     bastionName: bastionName
     publicIpAddressId: pip.outputs.publicIpId
