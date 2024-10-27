@@ -110,7 +110,7 @@ module bastion 'modules/bastion.bicep' = {
 //            ]
 //    secrets: []
 //  }
-}
+//}
 
 // module vm1 'modules/virtualMachine.bicep' = {
 //   name: 'vm1'
